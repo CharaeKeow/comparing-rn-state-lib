@@ -10,14 +10,18 @@ const Products = () => {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    axios.get('https://fakestoreapi.com/products')
+   useEffect(() => {
+    const signal = axios.CancelToken.source()
+    axios.get('https://fakestoreapi.com/products', {
+      cancelToken: signal.token
+    })
       .then(({data}) => {
   
         setProducts(data)
         setLoading(false)
       })
       .catch(err => console.log(err))
+    return () => signal.cancel('request cancelled')
   }, [])
 
   const renderItem = ({ item }) => {
