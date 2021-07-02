@@ -4,7 +4,9 @@ import { useNavigation } from '@react-navigation/native'
 
 import {MaterialCommunityIcons} from '@expo/vector-icons'
 
-const CartButton = ({ onPressHandler }) => {
+const CartButton = ({ onPressHandler, cartCount }) => {
+
+
   
   const navigation = useNavigation()
   
@@ -12,8 +14,8 @@ const CartButton = ({ onPressHandler }) => {
 
     <TouchableOpacity style={styles.button} onPress={onPressHandler(navigation)}>
       <View style={styles.cartCount}>
-        <Text style={{color: 'white'}}>{0}</Text>
-        </View>
+        <Text style={{color: 'white'}}>{cartCount}</Text>
+      </View>
       <MaterialCommunityIcons name="cart-outline" size={24} color="black" />
     </TouchableOpacity>
   

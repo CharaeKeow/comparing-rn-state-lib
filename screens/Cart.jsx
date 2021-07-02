@@ -1,14 +1,58 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, {useContext} from 'react'
+import { StyleSheet, Text, View, FlatList, Image } from 'react-native'
+
+import { CartContext } from '../contexts/CartContext'
+
+
+const CartItem = ({item }) => {
+  return (
+    <View style={styles.itemCard}>
+      <Image style={styles.image} source={{ uri: item.image }} />
+      <View style={{ paddingLeft: 20, flex: 1 }}>
+        <Text numberOfLines={1} style={styles.title}>{item.title}</Text>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+          <Text numberOfLines={1}>${item.price}</Text>
+          <Text>x{item.quantity}</Text>
+        </View>
+      </View>
+    </View>
+  )
+}
+
 
 const Cart = () => {
+  const [state, dispatch] = useContext(CartContext)
   return (
-    <View>
-      <Text></Text>
+    <View style={styles.itemsList}>
+      <FlatList data={Object.values(state.products)} renderItem={CartItem} keyExtractor={item=> `item-${item.id}`}></FlatList>
     </View>
   )
 }
 
 export default Cart
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  itemsList: {
+    padding: 20,
+    flex: 1,
+  },
+  itemCard: {
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  title: {
+    fontSize: 12,
+    fontWeight: '600',
+    flex: 1,
+  },
+  image: {
+    height: 70,
+    width: 70,
+    borderRadius: 10,
+    resizeMode: 'cover',
+  }
+})

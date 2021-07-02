@@ -1,11 +1,14 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+import {CartContext} from '../contexts/CartContext'
+
 const ProductCard = ({ product }) => {
+  const [state, dispatch] = useContext(CartContext)
   
   function addToCart() {
-    
+    dispatch({type: 'ADD_TO_CART', payload: product})
   }
   return (
  

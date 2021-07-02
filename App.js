@@ -1,37 +1,38 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { createContext } from 'react';
+import React, { useReducer } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { CartContext, initialState } from './contexts/CartContext.js';
 
 import Products from './screens/Products.jsx';
 import Cart from './screens/Cart.jsx';
 
 import CartButton from './components/CartButton.jsx';
 
-const initialState = {
-  products: [],
-};
 const reducer = (state, action) => {
   switch (action.type) {
     case 'ADD_TO_CART':
-      return {
-        products: [...state.products, action.payload],
-      };
+      if (!state.products[`item-${action.payload.id}`]) {
+        return { size: (state.size += 1), products: { ...state.products, [`item-${action.payload.id}`]: { ...action.payload, quantity: 1 } } };
+      } else {
+        let productsCopy = { ...state.products };
+        productsCopy[`item-${action.payload.id}`].quantity += 1;
+        return { size: (state.size += 1), products: productsCopy };
+      }
   }
 };
-
-const CartContext = createContext(initialState);
 
 const Stack = createStackNavigator();
 
 export default function App() {
+  const [state, dispatch] = useReducer(reducer, initialState);
   function cartButtonHandler(navigation) {
     return () => navigation.navigate('Cart');
   }
   return (
     <>
-      <CartContext.Provider>
+      <CartContext.Provider value={[state, dispatch]}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Products">
             <Stack.Screen
@@ -39,7 +40,7 @@ export default function App() {
               component={Products}
               options={{
                 headerRight: (props) => {
-                  return <CartButton {...props} onPressHandler={cartButtonHandler}></CartButton>;
+                  return <CartButton cartCount={state.size} {...props} onPressHandler={cartButtonHandler}></CartButton>;
                 },
               }}
             ></Stack.Screen>
