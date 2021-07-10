@@ -1,11 +1,13 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useStoreActions } from 'easy-peasy';
 
 const ProductCard = ({ product }) => {
+  const addProductToCart = useStoreActions((actions)=> actions.addProductToCart)
   
   function addToCart() {
-    
+    addProductToCart(product)
   }
   return (
  
