@@ -20,7 +20,10 @@ const Products = () => {
         setProducts(data)
         setLoading(false)
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        setLoading(false)
+        console.error(err)
+      })
     return () => signal.cancel('request cancelled')
   }, [])
 

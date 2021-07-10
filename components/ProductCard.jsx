@@ -1,11 +1,13 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useGlobalState } from '../state/Cart';
 
 const ProductCard = ({ product }) => {
+  const state = useGlobalState()
   
   function addToCart() {
-    
+    state.addToCart(product)
   }
   return (
  

@@ -1,10 +1,13 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { useGlobalState } from '../state/Cart'
 
-import {MaterialCommunityIcons} from '@expo/vector-icons'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+
 
 const CartButton = ({ onPressHandler }) => {
+  const state = useGlobalState()
   
   const navigation = useNavigation()
   
@@ -12,7 +15,7 @@ const CartButton = ({ onPressHandler }) => {
 
     <TouchableOpacity style={styles.button} onPress={onPressHandler(navigation)}>
       <View style={styles.cartCount}>
-        <Text style={{color: 'white'}}>{0}</Text>
+        <Text style={{color: 'white'}}>{state.get().size}</Text>
         </View>
       <MaterialCommunityIcons name="cart-outline" size={24} color="black" />
     </TouchableOpacity>
